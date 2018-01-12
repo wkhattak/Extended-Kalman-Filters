@@ -46,8 +46,8 @@ private:
   Eigen::MatrixXd Hj_;
   
   // acceleration noise components
-  float noise_ax;
-	float noise_ay;
+  float noise_ax_;
+	float noise_ay_;
 };
 
 #endif /* FusionEKF_H_ */
