@@ -125,18 +125,24 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   // Update the state transition matrix F according to the new elapsed time.
   ekf_.F_(0,2) = dt;
 	ekf_.F_(1,3) = dt;
-	//cout << "After integrating time ekf_.F_:\n"; 
-	//cout << ekf_.x_ << endl;
 
   // Update the process noise covariance matrix
   ekf_.Q_ = MatrixXd(4, 4);
-	ekf_.Q_ << ((pow(dt,4)/4) * noise_ax_), 0, ((pow(dt,3)/2) * noise_ax_), 0,
-			  0, ((pow(dt,4)/4) * noise_ay_), 0, ((pow(dt,3)/2) * noise_ay_),
-			  ((pow(dt,3)/2) * noise_ax_), 0, (pow(dt,2) * noise_ax_), 0,
-			  0, ((pow(dt,3)/2) * noise_ay_), 0, (pow(dt,2) * noise_ay_);
-	//cout << "After setting ekf_.Q_:\n"; 
-	//cout << ekf_.Q_ << endl;
-
+	/*ekf_.Q_ << ((pow(dt,4)/4) * noise_ax_), 0, ((pow(dt,3)/2) * noise_ax_), 0,
+              0, ((pow(dt,4)/4) * noise_ay_), 0, ((pow(dt,3)/2) * noise_ay_),
+              ((pow(dt,3)/2) * noise_ax_), 0, (pow(dt,2) * noise_ax_), 0,
+              0, ((pow(dt,3)/2) * noise_ay_), 0, (pow(dt,2) * noise_ay_);*/
+  float dt_2 = pow(dt,2);
+  float dt_3 = (pow(dt,3)/2);
+  float dt_3_x = dt_3 * noise_ax_;
+  float dt_3_y = dt_3 * noise_ay_;
+  float dt_4 = pow(dt,4)/4;
+  
+  ekf_.Q_ << (dt_4 * noise_ax_), 0, dt_3_x, 0,
+              0, (dt_4 * noise_ay_), 0, dt_3_y,
+              dt_3_x, 0, (dt_2 * noise_ax_), 0,
+              0, dt_3_y, 0, (dt_2 * noise_ay_);
+              
   ekf_.Predict();
 
   /*****************************************************************************
