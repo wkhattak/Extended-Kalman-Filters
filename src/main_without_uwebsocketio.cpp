@@ -50,7 +50,7 @@ int main()
     int line_number = 1;
     
     ofstream out_file;
-    out_file.open("estimations.txt");
+    out_file.open("estimates.txt");
     
 		while (getline(in_file, line)) {
       istringstream iss(line);
