@@ -54,14 +54,23 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   
   float rho = sqrt(pow(px, 2) + pow(py, 2));
   float theta = atan2(py, px);
-  if (theta < -PI || theta > PI) {
-    cout << "KalmanFilter::UpdateEKF() - Warning - Value of calculated theta " << theta << " is not between -Pi and +Pi!!!" << endl;
-  }
-  float rho_dot = (px * vx + py * vy) / rho;
+  float rho_dot = 0;
+  if (fabs(rho) >= 0.0001) {
+    rho_dot = (px * vx + py * vy) / rho;
+  } 
+  
   VectorXd z_pred = VectorXd(3);
   z_pred << rho, theta, rho_dot;
   
   VectorXd y = z - z_pred;
+  while (y(1) > PI || y(1) < -PI) {
+    if (y(1) > PI) {
+      y(1) -= 2*PI;
+    } else {
+      y(1) += 2*PI;
+    }
+  }
+  
   MatrixXd Ht = H_.transpose();
 	MatrixXd S = H_ * P_ * Ht + R_;
 	MatrixXd Si = S.inverse();

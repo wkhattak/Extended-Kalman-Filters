@@ -36,7 +36,11 @@ FusionEKF::FusionEKF() {
     * Set the process and measurement noises
   */
   H_laser_ << 1, 0, 0, 0,
-              0, 1, 0, 0; // Lesson 5, Section 13
+              0, 1, 0, 0; 
+              
+  Hj_ << 1, 1, 0, 0,
+         1, 1, 0, 0,
+         1, 1, 1, 1; 
 			  
   //initial state transition matrix F_
   ekf_.F_ = MatrixXd(4, 4);
@@ -87,7 +91,9 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       float theta = measurement_pack.raw_measurements_(1);
       float rho_dot = measurement_pack.raw_measurements_(2);
       ekf_.x_(0) = rho * cos(theta);
+      if (ekf_.x_(0) < 0.0001) ekf_.x_(0) = 0;
       ekf_.x_(1) = rho * sin(theta);
+      if (ekf_.x_(1) < 0.0001) ekf_.x_(1) = 0;
       ekf_.x_(2) = rho_dot * cos(theta);
       ekf_.x_(3) = rho_dot * sin(theta);
     }
@@ -96,11 +102,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       ekf_.x_(1) = measurement_pack.raw_measurements_(1);
     }
     
-    // NO need as already done in constructor
-    /*ekf_.F_ << 1, 0, 1, 0,
-             0, 1, 0, 1,
-             0, 0, 1, 0,
-             0, 0, 0, 1;*/
     previous_timestamp_ = measurement_pack.timestamp_;
     // done initializing, no need to predict or update
     is_initialized_ = true;
