@@ -42,28 +42,27 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
 
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   MatrixXd Hj(3,4);
-	Hj << 0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0;
-
 	//recover state parameters
 	float px = x_state(0);
 	float py = x_state(1);
 	float vx = x_state(2);
 	float vy = x_state(3);
 
-	double r1_r3c3_r3c4_denominator = sqrt(pow(px,2) + pow(py,2));
-	double r2_denominator = pow(px,2) + pow(py,2);
-	double r3c1_r3c2_denominator = pow(pow(px,2) + pow(py,2),3/2);
-	
-	if (r1_r3c3_r3c4_denominator == 0 || r2_denominator == 0 || r3c1_r3c2_denominator == 0) {
-		cout << "Tools::CalculateJacobian() - Error - Division by Zero!!!" << endl;
+	//pre-compute a set of terms to avoid repeated calculation
+	float c1 = px*px + py*py;
+	float c2 = sqrt(c1);
+	float c3 = c1 * c2;
+
+	//check division by zero
+	if(fabs(c1) < 0.0001){
+		cout << "CalculateJacobian () - Error - Division by Zero" << endl;
+		return Hj;
 	}
-	else {
-		Hj << px/r1_r3c3_r3c4_denominator, py/r1_r3c3_r3c4_denominator, 0, 0,
-			  -(py/r2_denominator), (px/r2_denominator), 0, 0,
-			  (py*(vx*py - vy*px))/r3c1_r3c2_denominator, (px*(vy*px - vx*py))/r3c1_r3c2_denominator, px/r1_r3c3_r3c4_denominator, py/r1_r3c3_r3c4_denominator;
-	}
+
+	//compute the Jacobian matrix
+	Hj << (px/c2), (py/c2), 0, 0,
+		    -(py/c1), (px/c1), 0, 0,
+		    py*(vx*py - vy*px)/c3, px*(px*vy - py*vx)/c3, px/c2, py/c2;
 
 	return Hj;
 }
