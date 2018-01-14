@@ -31,10 +31,12 @@ int main()
   float y_gt;
   float vx_gt;
   float vy_gt;
-  double p_x;
-  double p_y;
-  double v1;
-  double v2;
+  float p_x;
+  float p_y;
+  float v1;
+  float v2;
+  float px_meas;
+  float py_meas;
 
   string in_file_name_ = "../obj_pose-laser-radar-synthetic-input.txt";
 	ifstream in_file(in_file_name_.c_str(),std::ifstream::in);
@@ -62,6 +64,8 @@ int main()
         iss >> px;
         iss >> py;
         meas_package.raw_measurements_ << px, py;
+        px_meas = px;
+        py_meas = py;
         iss >> timestamp;
         meas_package.timestamp_ = timestamp;
       } 
@@ -72,6 +76,8 @@ int main()
         iss >> theta;
         iss >> ro_dot;
         meas_package.raw_measurements_ << ro,theta, ro_dot;
+        px_meas = ro * cos(theta);
+        py_meas = ro * sin(theta);
         iss >> timestamp;
         meas_package.timestamp_ = timestamp;
       }
@@ -110,14 +116,22 @@ int main()
       //  rmse_x, rmse_y, rmse_vx, and rmse_vy should be less than or equal to: 
       // [.11, .11, 0.52, 0.52]
       cout << "Result for observation: " << line_number << endl;
-      cout << "estimate_x: " << p_x << endl;
-      cout << "estimate_y: " << p_y << endl;
-      cout << "rmse_x: " << RMSE(0) << endl;
-      cout << "rmse_y: " << RMSE(1) << endl;
+      cout << "estimate_px: " << p_x << endl;
+      cout << "estimate_py: " << p_y << endl;
+       cout << "estimate_vx: " << v1 << endl;
+      cout << "estimate_vy: " << v2 << endl;
+       cout << "measured_px: " << px_meas << endl;
+      cout << "measured_py: " << py_meas << endl;
+      cout << "groundtruth_px: " << x_gt << endl;
+      cout << "groundtruth_py: " << y_gt << endl;
+       cout << "groundtruth_vx: " << vx_gt << endl;
+      cout << "groundtruth_vy: " << vy_gt << endl;
+      cout << "rmse_px: " << RMSE(0) << endl;
+      cout << "rmse_py: " << RMSE(1) << endl;
       cout << "rmse_vx: " << RMSE(2) << endl;
       cout << "rmse_vy: " << RMSE(3) << endl << endl;
       
-      out_file << p_x << "\t" << p_y << "\t" << RMSE(0) << "\t" << RMSE(1) << "\t" << RMSE(2) << "\t" << RMSE(3) << endl;
+      out_file << p_x << "\t" << p_y << "\t" << v1 << "\t" << v2 << "\t" << px_meas << "\t" << py_meas << "\t" << x_gt << "\t" << y_gt << "\t" << vx_gt << "\t" << vy_gt << "\t" << RMSE(0) << "\t" << RMSE(1) << "\t" << RMSE(2) << "\t" << RMSE(3) << endl;
       
       line_number += 1;
     }
