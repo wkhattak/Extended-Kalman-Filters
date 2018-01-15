@@ -42,7 +42,53 @@ The RMSE of the algorithm is `[.0964, .0853, 0.4154, 0.4316]` as shown in the fi
 ### Follows the Correct Algorithm
 #### Your Sensor Fusion algorithm follows the general processing flow as taught in the preceding lessons.
 
+The algorithm follows the general processing flow:
+
+1. Initialize state & covariance matrices on first sensor measurement.
+2. On subsequent measurements, run the same *predict* function.
+3. After *predict* function, call separate function for *update* depending upon the type of the sensor.
+
 #### Your Kalman Filter algorithm handles the first measurements appropriately. 
+
+The first measurement is handled correctly as follows:
+
+```c++
+if (!is_initialized_) {
+    /**
+      * Initialize the state ekf_.x_ with the first measurement.
+      * Create the covariance matrix.
+      * Remember: you'll need to convert radar from polar to cartesian coordinates.
+    */
+    // first measurement
+    cout << "EKF: " << endl;
+    ekf_.x_ = VectorXd(4);
+    ekf_.x_ << 1, 1, 1, 1;
+    
+    if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+      /**
+      Convert radar from polar to cartesian coordinates and initialize state.
+      */
+      float rho = measurement_pack.raw_measurements_(0);
+      float theta = measurement_pack.raw_measurements_(1);
+      float rho_dot = measurement_pack.raw_measurements_(2);
+      ekf_.x_(0) = rho * cos(theta);
+      if (ekf_.x_(0) < 0.0001) ekf_.x_(0) = 0;
+      ekf_.x_(1) = rho * sin(theta);
+      if (ekf_.x_(1) < 0.0001) ekf_.x_(1) = 0;
+      ekf_.x_(2) = rho_dot * cos(theta);
+      ekf_.x_(3) = rho_dot * sin(theta);
+    }
+    else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
+      ekf_.x_(0) = measurement_pack.raw_measurements_(0);
+      ekf_.x_(1) = measurement_pack.raw_measurements_(1);
+    }
+    
+    previous_timestamp_ = measurement_pack.timestamp_;
+    // done initializing, no need to predict or update
+    is_initialized_ = true;
+    return;
+  }
+```
 
 #### Your Kalman Filter algorithm first predicts then updates.
 
