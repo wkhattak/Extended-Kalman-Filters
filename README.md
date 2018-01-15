@@ -209,7 +209,7 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
 * **estimates.txt:** Tab-delimited file containing output data
 * **install-mac.sh:** Script for installing uWebSockets on Macintosh
 * **install-ubuntu.sh:** Script for installing uWebSockets on Ubuntu
----
+
 
 ## Requirements
 
@@ -239,21 +239,17 @@ This repository includes two files that can be used to set up and install [uWebS
 
 ### With Simulator
 
-Follow the build instructions above. Once the program is running, start the simulator. You should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown [here]()(https://github.com/wkhattak/Extended-Kalman-Filters#accuracy).
+Follow the build instructions above. Once the program is running, start the simulator. You should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown [here](https://github.com/wkhattak/Extended-Kalman-Filters#accuracy).
 
 ### Without Simulator
 
 Instead of installing the [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) library and running the simulator, following approach can be adopted:
 
 1. Remove the [main.cpp](https://github.com/wkhattak/Extended-Kalman-Filters/blob/master/src/main.cpp) file.
-
 2. Rename the [main_without_uwebsocketio.cpp](https://github.com/wkhattak/Extended-Kalman-Filters/blob/master/src/main_without_uwebsocketio.cpp) to `main.cpp`.
-
 3. Copy the file `data\obj_pose-laser-radar-synthetic-input.txt` to the parent directory where the code is running.
-
 4. Compile/run the project.
-
-5. Upon successful execution, you should see a file file `estimates.txt` created in the folder where the program is running. The file contains the data in this format:
+5. Upon successful execution, you should see a file `estimates.txt` created in the directory where the program is running. The file contains the data in this format:
 
 `px_est py_est vx_est vy_est px_meas py_meas px_gt 
 py_gt vx_gt vy_gt px_rmse py_rmse vx_rmse vy_rmse`
