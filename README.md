@@ -8,8 +8,6 @@ This project is about utilizing a [Kalman Filter](https://en.wikipedia.org/wiki/
 This project involves the use of a simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases). The simulator provides LiDAR and Radar measurements that are utilized by the Extended Kalman Filter(EKF) to provide estimated position & velocity of the object of interest.
 The EKF works in two steps; *predict* and *update*. In the *predict* step, based on the time difference alone (between previous & current timestamps), a prediction is made, whereas in the *update* step, the belief in object's location is updated based on the received sensor measurements.
 
-This repository includes two files that can be used to set up and install [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) for either Linux or Mac systems. 
-
 **INPUT**: values provided by the simulator to the c++ program
 
 `sensor_measurement` => the measurement that the simulator observed (either LiDAR or Radar)
@@ -231,6 +229,9 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
   * Windows: recommend using [MinGW](http://www.mingw.org/)
 
 ## Basic Build Instructions
+---
+
+This repository includes two files that can be used to set up and install [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) for either Linux or Mac systems. 
 
 1. Clone this repo.
 2. Make a build directory: `mkdir build && cd build`
@@ -240,8 +241,28 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
 ---
 
 ## Usage
+---
 
-Follow the build instructions above. Once the program is running, start the simulator. you should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown ![here][RMSE].
+### With Simulator
+
+Follow the build instructions above. Once the program is running, start the simulator. you should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown [here]()(https://github.com/wkhattak/Extended-Kalman-Filters#accuracy).
+
+### Without Simulator
+
+Instead of installing the [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) library and running the simulator, following approach can be adopted:
+
+1. Remove the [main.cpp](https://github.com/wkhattak/Extended-Kalman-Filters/blob/master/src/main.cpp) file.
+
+2. Rename the [main_without_uwebsocketio.cpp](https://github.com/wkhattak/Extended-Kalman-Filters/blob/master/src/main_without_uwebsocketio.cpp) to `main.cpp`.
+
+3. Copy the file `data\obj_pose-laser-radar-synthetic-input.txt` to the parent directory where the code is running.
+
+4. Compile/run the project.
+
+5. Upon successful execution, you should see a file file `estimates.txt` created in the folder where the program is running. The file contains the data in this format:
+
+`px_est py_est vx_est vy_est px_meas py_meas px_gt 
+py_gt vx_gt vy_gt px_rmse py_rmse vx_rmse vy_rmse`
 
 ## Output Data Visualizations
 
