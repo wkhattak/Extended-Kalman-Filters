@@ -241,7 +241,7 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
 
 ## Usage
 
-Follow the build instructions above. Once the program is running, start the simulator. you should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown [here][RMSE].
+Follow the build instructions above. Once the program is running, start the simulator. you should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown ![here][RMSE].
 
 ## Output Data Visualizations
 
