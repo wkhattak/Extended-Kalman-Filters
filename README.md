@@ -167,7 +167,7 @@ The Kalman Filter algorithm first predicts  then updates as shown below:
 The algorithm handles these types separately by executing different code based on the type of the sensor e.g.:
 
 ```c++
- if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR
+ if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR)
 ``` 
 
 ```c++
@@ -177,7 +177,33 @@ The algorithm handles these types separately by executing different code based o
 ### Code Efficiency
 #### Your algorithm should avoid unnecessary calculations.
 
+The algorithm follows the following guidelines:
+
+* Running the exact same calculation repeatedly when you can run it once, store the value and then reuse the value later.
+*Loops that run too many times.
+*Creating unnecessarily complex data structures when simpler structures work equivalently.
+*Unnecessary control flow checks.
+
+For example, consider the following code fragment:
+
+```c++
+  float dt_2 = pow(dt,2);
+  float dt_3 = (pow(dt,3)/2);
+  float dt_3_x = dt_3 * noise_ax_;
+  float dt_3_y = dt_3 * noise_ay_;
+  float dt_4 = pow(dt,4)/4;
+  
+  ekf_.Q_ << (dt_4 * noise_ax_), 0, dt_3_x, 0,
+              0, (dt_4 * noise_ay_), 0, dt_3_y,
+              dt_3_x, 0, (dt_2 * noise_ax_), 0,
+              0, dt_3_y, 0, (dt_2 * noise_ay_);
+```
+
+Here, the *process covariance matrix* `Q_` is being updated by pre-computing certain values that are used more than once within the matrix.
+
 ## Directory Structure
+
+
 
 ---
 
