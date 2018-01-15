@@ -1,11 +1,11 @@
-# Project: Extended Kalman Filter Project
+# Project: Extended Kalman Filter 
 ## Overview  
 
 This project is about utilizing a [Kalman Filter](https://en.wikipedia.org/wiki/Kalman_filter) to estimate the state (position & velocity) of a moving object of interest with noisy LiDAR and Radar measurements. 
 
 ## How Does It Work?
 
-This project involves the use of a simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases). The simulator provides LiDAR and Radar measurements that are utilized by the Extended Kalman Filter(EKF)to provide estimated position & velocity of the object of interest.
+This project involves the use of a simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases). The simulator provides LiDAR and Radar measurements that are utilized by the Extended Kalman Filter(EKF) to provide estimated position & velocity of the object of interest.
 The EKF works in two steps; *predict* and *update*. In the *predict* step, based on the time difference alone (between previous & current timestamps), a prediction is made, whereas in the *update* step, the belief in object's location is updated based on the received sensor measurements.
 
 This repository includes two files that can be used to set up and install [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) for either Linux or Mac systems. 
@@ -18,11 +18,17 @@ This repository includes two files that can be used to set up and install [uWebS
 **OUTPUT**: values provided by the c++ program to the simulator
 
 `estimate_x` <= kalman filter estimated position x
+
 `estimate_y` <= kalman filter estimated position y
+
 `rmse_x` <= root mean square error of position x
+
 `rmse_y` <= root mean square error of position y
+
 `rmse_vx` <= root mean square error of velocity x
+
 `rmse_vy` <= root mean square error of velocity y
+
 ---
 
 ## Rubric Points
@@ -37,6 +43,7 @@ The code compiles using `make` & `cmake` as indicated by the successful creation
 #### px, py, vx, vy output coordinates must have an RMSE <= [.11, .11, 0.52, 0.52] when using the file: "obj_pose-laser-radar-synthetic-input.txt which is the same data file the simulator uses for Dataset 1".
 
 The RMSE of the algorithm is `[.0964, .0853, 0.4154, 0.4316]` as shown in the figure below:
+
 ![RMSE](/images/simulator-1.jpg)
 
 ### Follows the Correct Algorithm
@@ -46,7 +53,7 @@ The algorithm follows the general processing flow:
 
 1. Initialize state & covariance matrices on first sensor measurement.
 2. On subsequent measurements, run the same *predict* function.
-3. After *predict* function, call separate function for *update* depending upon the type of the sensor.
+3. After *predict* function, call separate functions for *update* depending upon the type of the sensor.
 
 #### Your Kalman Filter algorithm handles the first measurements appropriately. 
 
@@ -91,6 +98,70 @@ if (!is_initialized_) {
 ```
 
 #### Your Kalman Filter algorithm first predicts then updates.
+
+The Kalman Filter algorithm first predicts  then updates as shown below:
+
+```c++
+/*****************************************************************************
+   *  Prediction
+   ****************************************************************************/
+
+  /**
+     * Update the state transition matrix F according to the new elapsed time.
+      - Time is measured in seconds.
+     * Update the process noise covariance matrix.
+     * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
+   */
+  //compute the time elapsed between the current and previous measurements
+  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
+  previous_timestamp_ = measurement_pack.timestamp_;
+  
+  // Update the state transition matrix F according to the new elapsed time.
+  ekf_.F_(0,2) = dt;
+	ekf_.F_(1,3) = dt;
+
+  // Update the process noise covariance matrix
+  ekf_.Q_ = MatrixXd(4, 4);
+	/*ekf_.Q_ << ((pow(dt,4)/4) * noise_ax_), 0, ((pow(dt,3)/2) * noise_ax_), 0,
+              0, ((pow(dt,4)/4) * noise_ay_), 0, ((pow(dt,3)/2) * noise_ay_),
+              ((pow(dt,3)/2) * noise_ax_), 0, (pow(dt,2) * noise_ax_), 0,
+              0, ((pow(dt,3)/2) * noise_ay_), 0, (pow(dt,2) * noise_ay_);*/
+  float dt_2 = pow(dt,2);
+  float dt_3 = (pow(dt,3)/2);
+  float dt_3_x = dt_3 * noise_ax_;
+  float dt_3_y = dt_3 * noise_ay_;
+  float dt_4 = pow(dt,4)/4;
+  
+  ekf_.Q_ << (dt_4 * noise_ax_), 0, dt_3_x, 0,
+              0, (dt_4 * noise_ay_), 0, dt_3_y,
+              dt_3_x, 0, (dt_2 * noise_ax_), 0,
+              0, dt_3_y, 0, (dt_2 * noise_ay_);
+              
+  ekf_.Predict();
+
+  /*****************************************************************************
+   *  Update
+   ****************************************************************************/
+
+  /**
+     * Use the sensor type to perform the update step.
+     * Update the state and covariance matrices.
+   */
+
+  if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
+    // Radar updates
+    Tools tools;
+    Hj_ = tools.CalculateJacobian(ekf_.x_);
+    ekf_.H_ = Hj_;
+    ekf_.R_ = R_radar_;    
+    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+  } else {
+    // laser updates
+    ekf_.H_ = H_laser_;
+    ekf_.R_ = R_laser_;
+    ekf_.Update(measurement_pack.raw_measurements_);
+  }
+```
 
 #### Your Kalman Filter can handle radar and lidar measurements.
 
