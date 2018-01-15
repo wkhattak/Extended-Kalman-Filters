@@ -32,7 +32,6 @@ This repository includes two files that can be used to set up and install [uWebS
 ---
 
 ## Rubric Points
----
 
 ### Compilation
 #### Your code should compile.
@@ -163,7 +162,17 @@ The Kalman Filter algorithm first predicts  then updates as shown below:
   }
 ```
 
-#### Your Kalman Filter can handle radar and lidar measurements.
+#### Your Kalman Filter can handle Radar and LiDAR measurements.
+
+The algorithm handles these types separately by executing different code based on the type of the sensor e.g.:
+
+```c++
+ if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR
+``` 
+
+```c++
+ else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER)
+```
 
 ### Code Efficiency
 #### Your algorithm should avoid unnecessary calculations.
