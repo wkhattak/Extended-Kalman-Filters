@@ -23,6 +23,35 @@ This repository includes two files that can be used to set up and install [uWebS
 `rmse_y` <= root mean square error of position y
 `rmse_vx` <= root mean square error of velocity x
 `rmse_vy` <= root mean square error of velocity y
+---
+
+## Rubric Points
+---
+
+### Compilation
+#### Your code should compile.
+
+The code compiles using `make` & `cmake` as indicated by the successful creation of the `./ExtendedKF` directory.
+
+### Accuracy
+#### px, py, vx, vy output coordinates must have an RMSE <= [.11, .11, 0.52, 0.52] when using the file: "obj_pose-laser-radar-synthetic-input.txt which is the same data file the simulator uses for Dataset 1".
+
+The RMSE of the algorithm is `[.0964, .0853, 0.4154, 0.4316]` as shown in the figure below:
+![RMSE](/images/simulator-1.jpg)
+
+### Follows the Correct Algorithm
+#### Your Sensor Fusion algorithm follows the general processing flow as taught in the preceding lessons.
+
+#### Your Kalman Filter algorithm handles the first measurements appropriately. 
+
+#### Your Kalman Filter algorithm first predicts then updates.
+
+#### Your Kalman Filter can handle radar and lidar measurements.
+
+### Code Efficiency
+#### Your algorithm should avoid unnecessary calculations.
+
+## Directory Structure
 
 ---
 
@@ -46,4 +75,10 @@ This repository includes two files that can be used to set up and install [uWebS
 3. Compile: `cmake .. && make` 
    * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
 4. Run it: `./ExtendedKF `
+---
 
+## Usage
+---
+
+## License
+The content of this project is licensed under the [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/us/deed.en_US).
