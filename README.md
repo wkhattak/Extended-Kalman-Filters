@@ -1,10 +1,10 @@
 # Project: Extended Kalman Filter 
 ## Overview  
----
+
 This project is about utilizing a [Kalman Filter](https://en.wikipedia.org/wiki/Kalman_filter) to estimate the state (position & velocity) of a moving object of interest with noisy LiDAR and Radar measurements. 
 
 ## How Does It Work?
----
+
 This project involves the use of a simulator which can be downloaded from [here](https://github.com/udacity/self-driving-car-sim/releases). The simulator provides LiDAR and Radar measurements that are utilized by the Extended Kalman Filter(EKF) to provide estimated position & velocity of the object of interest.
 The EKF works in two steps; *predict* and *update*. In the *predict* step, based on the time difference alone (between previous & current timestamps), a prediction is made, whereas in the *update* step, the belief in object's location is updated based on the received sensor measurements.
 
@@ -28,10 +28,8 @@ The EKF works in two steps; *predict* and *update*. In the *predict* step, based
 `rmse_vy` <= root mean square error of velocity y
 
 
-
-
 ## Rubric Points
----
+
 ### Compilation
 #### Your code should compile.
 
@@ -201,7 +199,6 @@ For example, consider the following code fragment:
 Here, the *process covariance matrix* `Q_` is being updated by pre-computing certain values that are used more than once within the matrix.
 
 ## Directory Structure
----
 
 * **data:** Directory containing sample sensor measurements
 * **images:** Some screenshots
@@ -215,7 +212,6 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
 ---
 
 ## Requirements
----
 
 * cmake >= 3.5
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
@@ -229,7 +225,6 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
   * Windows: recommend using [MinGW](http://www.mingw.org/)
 
 ## Basic Build Instructions
----
 
 This repository includes two files that can be used to set up and install [uWebSocketIO](https://github.com/uWebSockets/uWebSockets) for either Linux or Mac systems. 
 
@@ -238,14 +233,13 @@ This repository includes two files that can be used to set up and install [uWebS
 3. Compile: `cmake .. && make` 
    * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
 4. Run it: `./ExtendedKF `
----
+
 
 ## Usage
----
 
 ### With Simulator
 
-Follow the build instructions above. Once the program is running, start the simulator. you should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown [here]()(https://github.com/wkhattak/Extended-Kalman-Filters#accuracy).
+Follow the build instructions above. Once the program is running, start the simulator. You should see a *connected!!!* message upon successful connection between the simulator and the c++ program. Hit the *Start button*. The output should be same as shown [here]()(https://github.com/wkhattak/Extended-Kalman-Filters#accuracy).
 
 ### Without Simulator
 
@@ -266,7 +260,6 @@ py_gt vx_gt vy_gt px_rmse py_rmse vx_rmse vy_rmse`
 
 
 ## Output Data Visualizations
----
 
 Estimated position of the object is shown as green triangles:
 
@@ -279,6 +272,5 @@ Visualization generated using the `estimates.txt` file:
 
 
 ## License
----
 
 The content of this project is licensed under the [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/us/deed.en_US).
