@@ -180,8 +180,11 @@ The algorithm handles these types separately by executing different code based o
 The algorithm follows the following guidelines:
 
 * Running the exact same calculation repeatedly when you can run it once, store the value and then reuse the value later.
+
 *Loops that run too many times.
+
 *Creating unnecessarily complex data structures when simpler structures work equivalently.
+
 *Unnecessary control flow checks.
 
 For example, consider the following code fragment:
@@ -203,8 +206,15 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
 
 ## Directory Structure
 
-
-
+* **data:** Directory containing sample sensor measurements
+* **images:** Some screenshots
+* **src:** Directory containing c++ source files along with Eigen library
+* **CMakeLists.txt:** File containing compilation instructions
+* **README.md:** Project readme file
+* **Visualization.ipynb:** Python notebook for output data voiualization 
+* **estimates.txt:** Tab-delimited file containing output data
+* **install-mac.sh:** Script for installing uWebSockets on Macintosh
+* **install-ubuntu.sh:** Script for installing uWebSockets on Ubuntu
 ---
 
 ## Requirements
@@ -231,6 +241,19 @@ Here, the *process covariance matrix* `Q_` is being updated by pre-computing cer
 
 ## Usage
 ---
+
+## Output Data Visualizations
+---
+
+Estimated position of the object is shown as green triangles:
+
+![Simulator Zoomed In](/images/simulator-2.jpg)
+
+
+Visualization generated using the `estimates.txt` file:
+
+![Output Data Visualization](/images/data-visualization.png)
+
 
 ## License
 The content of this project is licensed under the [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/us/deed.en_US).
