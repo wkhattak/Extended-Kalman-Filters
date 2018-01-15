@@ -1,11 +1,11 @@
 # Project: Extended Kalman Filter 
 ## Overview  
-
+---
 This project is about utilizing a [Kalman Filter](https://en.wikipedia.org/wiki/Kalman_filter) to estimate the state (position & velocity) of a moving object of interest with noisy LiDAR and Radar measurements. 
 
 ## How Does It Work?
-
-This project involves the use of a simulator which can be downloaded [here](https://github.com/udacity/self-driving-car-sim/releases). The simulator provides LiDAR and Radar measurements that are utilized by the Extended Kalman Filter(EKF) to provide estimated position & velocity of the object of interest.
+---
+This project involves the use of a simulator which can be downloaded from [here](https://github.com/udacity/self-driving-car-sim/releases). The simulator provides LiDAR and Radar measurements that are utilized by the Extended Kalman Filter(EKF) to provide estimated position & velocity of the object of interest.
 The EKF works in two steps; *predict* and *update*. In the *predict* step, based on the time difference alone (between previous & current timestamps), a prediction is made, whereas in the *update* step, the belief in object's location is updated based on the received sensor measurements.
 
 **INPUT**: values provided by the simulator to the c++ program
@@ -27,10 +27,11 @@ The EKF works in two steps; *predict* and *update*. In the *predict* step, based
 
 `rmse_vy` <= root mean square error of velocity y
 
----
+
+
 
 ## Rubric Points
-
+---
 ### Compilation
 #### Your code should compile.
 
@@ -178,12 +179,9 @@ The algorithm handles these types separately by executing different code based o
 The algorithm follows the following guidelines:
 
 * Running the exact same calculation repeatedly when you can run it once, store the value and then reuse the value later.
-
-*Loops that run too many times.
-
-*Creating unnecessarily complex data structures when simpler structures work equivalently.
-
-*Unnecessary control flow checks.
+* Loops that run too many times.
+* Creating unnecessarily complex data structures when simpler structures work equivalently.
+* Unnecessary control flow checks.
 
 For example, consider the following code fragment:
 
@@ -203,19 +201,21 @@ For example, consider the following code fragment:
 Here, the *process covariance matrix* `Q_` is being updated by pre-computing certain values that are used more than once within the matrix.
 
 ## Directory Structure
+---
 
 * **data:** Directory containing sample sensor measurements
 * **images:** Some screenshots
 * **src:** Directory containing c++ source files along with Eigen library
 * **CMakeLists.txt:** File containing compilation instructions
 * **README.md:** Project readme file
-* **Visualization.ipynb:** Python notebook for output data voiualization 
+* **Visualization.ipynb:** Python notebook for output data visualization 
 * **estimates.txt:** Tab-delimited file containing output data
 * **install-mac.sh:** Script for installing uWebSockets on Macintosh
 * **install-ubuntu.sh:** Script for installing uWebSockets on Ubuntu
 ---
 
 ## Requirements
+---
 
 * cmake >= 3.5
   * All OSes: [click here for installation instructions](https://cmake.org/install/)
@@ -264,8 +264,9 @@ Instead of installing the [uWebSocketIO](https://github.com/uWebSockets/uWebSock
 `px_est py_est vx_est vy_est px_meas py_meas px_gt 
 py_gt vx_gt vy_gt px_rmse py_rmse vx_rmse vy_rmse`
 
-## Output Data Visualizations
 
+## Output Data Visualizations
+---
 
 Estimated position of the object is shown as green triangles:
 
@@ -278,4 +279,6 @@ Visualization generated using the `estimates.txt` file:
 
 
 ## License
+---
+
 The content of this project is licensed under the [Creative Commons Attribution 3.0 license](https://creativecommons.org/licenses/by/3.0/us/deed.en_US).
